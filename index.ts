@@ -25,6 +25,7 @@ app.use(fileupload());
 
 app.use('/api/contacts', require('./routes/contacts'));
 app.use('/api/users', require('./routes/users'));
+app.use('/api/help', require('./routes/help'));
 
 app.get('/test/:hour', async (req: Request, res: Response) => {
   const { hour } = req.params;

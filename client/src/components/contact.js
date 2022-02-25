@@ -11,7 +11,7 @@ const Contact = () => {
     const { email, subject, msg } = values;
     try {
       setLoading(true);
-      await axios.post('/api/contact', { email, subject, message: msg });
+      await axios.post('/api/help', { email, subject, message: msg });
       form.resetFields();
       message.success('Message sent!');
     } catch (error) {

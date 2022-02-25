@@ -8,7 +8,7 @@ import Home from './components/home';
 import ResetPassword from './components/password/reset-password';
 import ChangePassword from './components/password/change-password';
 import NotFound from './components/not-found';
-// import Dashboard from './components/dashboard/dashboard';
+import Contact from './components/contact';
 import Contacts from './components/dashboard/contacts';
 
 const Router = () => {
@@ -18,6 +18,7 @@ const Router = () => {
       <Route path="/confirm" element={<Confirm />} />
       <Route path="/login" element={<Login />} />
       <Route path="/reset-password" element={<ResetPassword />} />
+      <Route path="/help" element={<Contact />} />
       <Route
         path="/change-password"
         element={

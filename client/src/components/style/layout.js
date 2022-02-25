@@ -87,7 +87,7 @@ const Layout = ({ children }) => {
       <Wrapper>{children}</Wrapper>
       <FooterFull>
         <Footer>
-          <Link to="/contact">Contact Us</Link>
+          <Link to="/help">Contact Us</Link>
           {/* {new Date().getFullYear()} - Financial Snapshot */}
         </Footer>
       </FooterFull>
