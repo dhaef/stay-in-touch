@@ -16,7 +16,7 @@ const InputItms = styled(Input)`
 `;
 
 const ResetPassword = () => {
-  const history = useNavigate();
+  const navigate = useNavigate();
   const [stage, setStage] = useState('code');
   const [email, setEmail] = useState('');
   const [code, setCode] = useState('');
@@ -56,7 +56,7 @@ const ResetPassword = () => {
     user.confirmPassword(code, password, {
       onSuccess: (data) => {
         console.log('s', data);
-        history.push('/login');
+        navigate('/login');
       },
       onFailure: (data) => {
         console.log('f', data);

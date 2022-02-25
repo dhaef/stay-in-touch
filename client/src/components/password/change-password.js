@@ -15,7 +15,7 @@ const InputItms = styled(Input)`
 `;
 
 const ChangePassword = () => {
-  const history = useNavigate();
+  const navigate = useNavigate();
   const { getSession } = useContext(AccountContext);
   const [currPassword, setCurrPassword] = useState('');
   const [newPassword, setNewPassword] = useState('');
@@ -33,7 +33,7 @@ const ChangePassword = () => {
       } else {
         console.log('SUCCESS', result);
         message.success('Successfully change password!');
-        history.push('/dashboard');
+        navigate('/dashboard');
       }
     });
   };

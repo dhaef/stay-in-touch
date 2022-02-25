@@ -26,12 +26,9 @@ app.use(fileupload());
 app.use('/api/contacts', require('./routes/contacts'));
 app.use('/api/users', require('./routes/users'));
 
-app.post('/test', async (req: Request, res: Response) => {
-  await create({
-    poolId: 'us-east-1_pU1SZ0t8M',
-    email: 'blah',
-    userSub: '516fb690-eb1e-4677-ae6c-aded5a249316',
-  });
+app.post('/test/:hour', async (req: Request, res: Response) => {
+  const { hour } = req.params;
+  console.log(`HERERERE`, hour);
   res.status(200).json({ test: 'success' });
 });
 
