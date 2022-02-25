@@ -9,6 +9,11 @@ import {
 } from '@ant-design/icons';
 import axios from 'axios';
 import Card from '../style/card';
+import styled from 'styled-components';
+
+const TableContainer = styled.div`
+  overflow-y: auto;
+`;
 
 const ContactsTable = ({ token, data, fetch }) => {
   const [contacts, setContacts] = useState([data?.contacts]);
@@ -111,12 +116,14 @@ const ContactsTable = ({ token, data, fetch }) => {
   return (
     <div>
       <Card title="Contacts Table">
-        <Table
-          columns={columns}
-          dataSource={contacts[pageNumber]}
-          rowKey="id"
-          pagination={false}
-        />
+        <TableContainer>
+          <Table
+            columns={columns}
+            dataSource={contacts[pageNumber]}
+            rowKey="id"
+            pagination={false}
+          />
+        </TableContainer>
         <div style={{ marginTop: '10px' }}>
           <Button
             type="default"
