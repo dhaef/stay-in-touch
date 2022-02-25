@@ -8,6 +8,20 @@ import { getUser } from '../db/users';
 import dayjs from 'dayjs';
 import { sendEmail } from './send-email';
 
+const getLineItem = (contact: EstablishedContact) => {
+  let item = `${contact.name}`;
+
+  if (contact?.contactInfo) {
+    item += ` @${contact?.contactInfo}`;
+  }
+
+  if (contact?.notes) {
+    item += ` Notes: ${contact?.notes}`;
+  }
+
+  return `<li>${item}</li>`;
+};
+
 /* 
 
 - Get all contacts that have a sk in the next 24 hours
@@ -60,7 +74,6 @@ export const findContacts = async (hour: number) => {
           }
           return;
         }
-        // need to remove it from the contacts array
 
         let msg = `
           <div>
@@ -68,7 +81,7 @@ export const findContacts = async (hour: number) => {
               
               Here’s who you should keep in touch with:
               <ul>
-                  ${gc.contacts.map((cs) => `${cs.name}: ${cs?.contactInfo}`)}
+                  ${gc.contacts.map((cs) => getLineItem(cs))}
               </ul>
               <p>Hour: ${hour}</p>
               <p>Happy reconnecting!</p>
