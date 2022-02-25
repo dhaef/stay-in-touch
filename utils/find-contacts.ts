@@ -70,7 +70,7 @@ export const findContacts = async (hour: number) => {
               <ul>
                   ${gc.contacts.map((cs) => `${cs.name}: ${cs?.contactInfo}`)}
               </ul>
-  
+              <p>Hour: ${hour}</p>
               <p>Happy reconnecting!</p>
           </div>
         `;

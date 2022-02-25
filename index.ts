@@ -3,8 +3,8 @@ import bodyParser from 'body-parser';
 // const forceSsl = require('force-ssl-heroku');
 // import rateLimit from 'express-rate-limit';
 import path from 'path';
-import { create } from './db/users';
 import fileupload from 'express-fileupload';
+import { findContacts } from './utils/find-contacts';
 
 const port = process.env.PORT || 5000;
 require('dotenv').config();
@@ -29,6 +29,7 @@ app.use('/api/users', require('./routes/users'));
 app.get('/test/:hour', async (req: Request, res: Response) => {
   const { hour } = req.params;
   console.log(`HERERERE`, hour);
+  await findContacts(+hour);
   res.status(200).json({ test: 'success' });
 });
 
