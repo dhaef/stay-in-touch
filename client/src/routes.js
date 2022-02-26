@@ -10,6 +10,7 @@ import ChangePassword from './components/password/change-password';
 import NotFound from './components/not-found';
 import Contact from './components/contact';
 import Contacts from './components/dashboard/contacts';
+import Stripe from './components/stripe/stripe';
 
 const Router = () => {
   return (
@@ -24,6 +25,14 @@ const Router = () => {
         element={
           <PrivateRoute>
             <ChangePassword />
+          </PrivateRoute>
+        }
+      />
+      <Route
+        path="/pay"
+        element={
+          <PrivateRoute>
+            <Stripe />
           </PrivateRoute>
         }
       />

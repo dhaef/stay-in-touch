@@ -16,10 +16,10 @@ const getLineItem = (contact: EstablishedContact) => {
   }
 
   if (contact?.notes) {
-    item += ` Notes: ${contact?.notes}`;
+    item += `<p>Notes: ${contact?.notes}</p>`;
   }
 
-  return `<li>${item}</li>`;
+  return `<div>${item}</div>`;
 };
 
 /* 
@@ -80,9 +80,8 @@ export const findContacts = async (hour: number) => {
               <h3>Hi!</h3>
               
               Here’s who you should keep in touch with:
-              <ul>
-                  ${gc.contacts.map((cs) => getLineItem(cs))}
-              </ul>
+              ${gc.contacts.map((cs) => getLineItem(cs))}
+
               <p>Hour: ${hour}</p>
               <p>Happy reconnecting!</p>
           </div>

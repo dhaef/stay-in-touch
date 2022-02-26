@@ -1,14 +1,15 @@
 import React, { useState } from 'react';
-import { Form, Input, Button, Select } from 'antd';
+import { Form, Input, Button, Select, Typography, Alert } from 'antd';
 import axios from 'axios';
 import Card from '../style/card';
+import { Link } from 'react-router-dom';
 
 const AddContact = ({ token, fetch }) => {
   const [form] = Form.useForm();
   const [loading, setLoading] = useState(false);
+  const [limitError, setLimitError] = useState({ status: false });
 
   const onFinish = async (values) => {
-    console.log(values);
     setLoading(true);
     try {
       await axios.post(
@@ -16,10 +17,17 @@ const AddContact = ({ token, fetch }) => {
         { ...values },
         { headers: { Authorization: `Bearer ${token}` } }
       );
+
       form.resetFields();
       fetch();
     } catch (error) {
       console.log(error);
+      if (error.response.data.msg === 'contacts limit reached') {
+        setLimitError({
+          status: true,
+          count: error.response.data.contactsCount,
+        });
+      }
     }
     setLoading(false);
   };
@@ -27,6 +35,22 @@ const AddContact = ({ token, fetch }) => {
   return (
     <Card title="Add Contact">
       {/* <div style={{ maxWidth: '400px', margin: 'auto' }}> */}
+      {limitError.status && (
+        <Alert
+          type="error"
+          style={{ marginBottom: '14px' }}
+          message={
+            <Typography.Text>
+              Free tier limit reached: 250 contacts.{' '}
+              <Link to="/pay" style={{ fontWeight: '700' }}>
+                Join now
+              </Link>{' '}
+              to add unlimited contacts. Current contacts count:{' '}
+              <span style={{ fontWeight: '700' }}>{limitError?.count}</span>
+            </Typography.Text>
+          }
+        />
+      )}
       <Form
         form={form}
         onFinish={onFinish}

@@ -1,14 +1,26 @@
 import csv from 'csvtojson';
 import { create } from '../db/contacts';
+import { updateContactsCount } from '../db/users';
+import { checkSubscription } from './stripe';
 
-export const bulkAddContacts = async (userId, file) => {
+export const contactLimit = 250;
+
+export const bulkAddContacts = async (
+  userId,
+  file,
+  contactsCount = 0,
+  stripeSubscriptionId
+) => {
   try {
     const contacts = await csv().fromString(file.data.toString());
     console.log(contacts);
 
-    // if (contacts?.length >= 500) {
-    //     throw new Error(`too many items`);
-    // }
+    if (contacts?.length + contactsCount > contactLimit) {
+      const auth = await checkSubscription(stripeSubscriptionId);
+      if (!auth) {
+        return `contacts limit reached`;
+      }
+    }
 
     const created = await Promise.all(
       contacts.map(
@@ -24,6 +36,7 @@ export const bulkAddContacts = async (userId, file) => {
       )
     );
 
+    await updateContactsCount(userId, contactsCount + created?.length);
     return {
       total: created?.length,
       created,

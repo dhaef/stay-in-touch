@@ -1,5 +1,4 @@
 import { client } from './client';
-// import { v4 as uuidv4 } from 'uuid';
 import dayjs from 'dayjs';
 import { removeDbItems } from '../utils/db';
 
@@ -14,6 +13,7 @@ export interface User {
   id: string;
   poolId: string;
   reminderTime: number;
+  contactsCount: number;
 }
 
 export const create = async ({ email, poolId, userSub }) => {
@@ -22,6 +22,7 @@ export const create = async ({ email, poolId, userSub }) => {
     email,
     poolId,
     reminderTime: 0,
+    contactsCount: 0,
     createdAt: dayjs().toISOString(),
     pk: `User|${userSub}`,
     sk: `User`,
@@ -84,4 +85,51 @@ export const setReminderTime = async (userId: string, reminderTime: number) => {
   const response = await client.update(params).promise();
   console.log(response);
   return response.Attributes;
+};
+
+export const updateContactsCount = async (
+  userId: string,
+  contactsCount: number
+) => {
+  const params = {
+    TableName: tableName,
+    Key: {
+      pk: `User|${userId}`,
+      sk: 'User',
+    },
+    UpdateExpression: `
+      SET contactsCount=:contactsCount
+    `,
+    ExpressionAttributeValues: {
+      ':contactsCount': contactsCount,
+    },
+    ReturnValues: 'ALL_NEW',
+  };
+
+  const response = await client.update(params).promise();
+  console.log(response);
+  return response.Attributes;
+};
+
+export const stripeUpdate = async (userId, customerId, subscriptionId) => {
+  const params = {
+    TableName: tableName,
+    Key: {
+      pk: `User|${userId}`,
+      sk: 'User',
+    },
+    UpdateExpression: `
+      SET stripeCustomerId=:stripeCustomerId,
+      stripeSubscriptionId=:stripeSubscriptionId
+    `,
+    ExpressionAttributeValues: {
+      ':stripeCustomerId': customerId,
+      ':stripeSubscriptionId': subscriptionId,
+    },
+    ReturnValues: 'ALL_NEW',
+  };
+
+  const response = await client.update(params).promise();
+  console.log(response);
+  return response;
 };

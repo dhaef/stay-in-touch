@@ -2,15 +2,29 @@ import { Router, Request, Response } from 'express';
 import { create, remove, contactsByUserId, contactsById } from '../db/contacts';
 import { findContacts } from '../utils/find-contacts';
 import { authUser, UserRequest } from '../middleware/auth';
-import { bulkAddContacts } from '../utils/bulk-add-contacts';
+import { bulkAddContacts, contactLimit } from '../utils/bulk-add-contacts';
+import { updateContactsCount } from '../db/users';
+import { checkSubscription } from '../utils/stripe';
 
 const router = Router();
 
 router.post('/bulk', authUser, async (req: any, res: Response) => {
-  const { id: userId } = req.user;
+  const { id: userId, contactsCount } = req.user;
 
   try {
-    const contacts = await bulkAddContacts(userId, req.files.file);
+    const contacts = await bulkAddContacts(
+      userId,
+      req.files.file,
+      contactsCount,
+      req.user?.stripeSubscriptionId
+    );
+    console.log(contacts);
+    if (contacts === 'contacts limit reached') {
+      return res
+        .status(400)
+        .json({ msg: 'contacts limit reached', contactsCount });
+    }
+
     res.status(200).json({ data: contacts });
   } catch (error) {
     console.log(error);
@@ -25,8 +39,17 @@ router.post('/', authUser, async (req: UserRequest, res: Response) => {
     notes,
     contactInfo,
   } = req.body;
-  const { id: userId } = req.user;
+  const { id: userId, contactsCount = 0 } = req.user;
   try {
+    if (contactsCount + 1 > contactLimit) {
+      const auth = await checkSubscription(req.user?.stripeSubscriptionId);
+      if (!auth) {
+        return res
+          .status(400)
+          .json({ msg: 'contacts limit reached', contactsCount });
+      }
+    }
+
     const contact = await create({
       userId,
       name,
@@ -35,6 +58,7 @@ router.post('/', authUser, async (req: UserRequest, res: Response) => {
       notes,
       contactInfo,
     });
+    await updateContactsCount(userId, contactsCount + 1);
     res.status(200).json({ data: contact });
   } catch (error) {
     console.log(error);
@@ -82,11 +106,12 @@ router.get('/:id', authUser, async (req: UserRequest, res: Response) => {
 });
 
 router.delete('/:id', authUser, async (req: UserRequest, res: Response) => {
-  const { id: userId } = req.user;
+  const { id: userId, contactsCount = 0 } = req.user;
   const { id } = req.params;
 
   try {
     const contact = await remove(userId, id);
+    await updateContactsCount(userId, contactsCount - 1);
 
     res.status(200).json({ data: contact });
   } catch (error) {

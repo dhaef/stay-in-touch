@@ -2,7 +2,7 @@ import React from 'react';
 import Layout from './style/layout';
 import styled from 'styled-components';
 import { Button, Typography, Row, Col } from 'antd';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 
 const Banner = styled(Row)`
   width: 100%;
@@ -38,7 +38,7 @@ const Home = () => {
           <Typography.Text style={{ fontSize: '18px', color: '#8c8c8c' }}>
             {/* Never forget to stay in touch with your acquaintances with daily
             reminders.  */}
-            A simple system to stay in touch with your acquaintances.
+            A simple system to never lose touch with your acquaintances.
           </Typography.Text>
         </Col>
       </Banner>
@@ -54,6 +54,34 @@ const Home = () => {
           />
         </Link>
       </div> */}
+      <div
+        style={{
+          maxWidth: '600px',
+          margin: '2.5% auto 5% auto',
+          textAlign: 'center',
+          padding: '5%',
+        }}
+      >
+        <Text>
+          Insipred by{' '}
+          <a href="https://sive.rs/hundreds" target="_blank" rel="noreferrer">
+            Derek Sivers
+          </a>{' '}
+          and{' '}
+          <a
+            href="https://jakobgreenfeld.com/stay-in-touch"
+            target="_blank"
+            rel="noreferrer"
+          >
+            Jakob Greenfields
+          </a>{' '}
+          systems to keep in touch and stay top of mind of those around you.{' '}
+          <Link to="/sign-up" style={{ fontWeight: 'bolder' }}>
+            Stay-In-Touch
+          </Link>{' '}
+          empowers you to easily build your own custom system.
+        </Text>
+      </div>
       <div
         style={{
           maxWidth: '600px',
@@ -113,7 +141,8 @@ const Home = () => {
                   color: '#8c8c8c',
                 }}
               >
-                Create your account and add your contacts.
+                Create your account and add your contacts with custom
+                timeframes.
               </Text>
             </div>
           </Col>

@@ -1,5 +1,5 @@
-import React from 'react';
-import { Upload, Collapse } from 'antd';
+import React, { useState } from 'react';
+import { Upload, Collapse, Typography, Alert } from 'antd';
 import axios from 'axios';
 import Card from '../style/card';
 import styled from 'styled-components';
@@ -49,6 +49,7 @@ const data = [
 ];
 
 const BulkAddContacts = ({ token, fetch }) => {
+  const [limitError, setLimitError] = useState({ status: false });
   const onChange = (info) => {
     // console.log(info.file);
   };
@@ -71,6 +72,13 @@ const BulkAddContacts = ({ token, fetch }) => {
       fetch();
       onSuccess(true);
     } catch (error) {
+      console.log(error);
+      if (error.response.data.msg === 'contacts limit reached') {
+        setLimitError({
+          status: true,
+          count: error.response.data.contactsCount,
+        });
+      }
       onError(error);
     }
   };
@@ -83,6 +91,23 @@ const BulkAddContacts = ({ token, fetch }) => {
           Download a template.
         </Link>
       </p>
+      {limitError.status && (
+        <Alert
+          type="error"
+          style={{ marginBottom: '14px' }}
+          message={
+            <Typography.Text>
+              Free tier limit reached: 250 contacts.{' '}
+              <Link to="/pay" style={{ fontWeight: '700' }}>
+                Join now
+              </Link>{' '}
+              to add unlimited contacts or remove contacts from your file to
+              stay under the limit. Current contacts count:
+              <span style={{ fontWeight: '700' }}>{limitError?.count}</span>
+            </Typography.Text>
+          }
+        />
+      )}
       <Upload.Dragger
         name="file"
         maxCount={1}
