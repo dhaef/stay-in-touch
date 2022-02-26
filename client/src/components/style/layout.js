@@ -65,7 +65,7 @@ const Layout = ({ children }) => {
       <Container>
         <Nav>
           <Link to="/">
-            <Title level={3}>Stay-In-Touch</Title>
+            <Title level={3}>Keep-In-Touch</Title>
           </Link>
           {status ? (
             <RightNav>

@@ -87,7 +87,7 @@ const BulkAddContacts = ({ token, fetch }) => {
     <Card title="Bulk Add Contacts">
       <p>Add multiple contacts at once by uploading a .csv file.</p>
       <p>
-        <Link to="/stay-in-contact.csv" target="_blank" download>
+        <Link to="/keep-in-contact.csv" target="_blank" download>
           Download a template.
         </Link>
       </p>

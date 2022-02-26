@@ -87,7 +87,7 @@ export const findContacts = async (hour: number) => {
           </div>
         `;
 
-        return await sendEmail(user.email, msg, `Stay In Touch!`);
+        return await sendEmail(user.email, msg, `Keep In Touch Reminder!`);
       } catch (error) {
         console.log(error);
       }

@@ -34,7 +34,7 @@ const Home = () => {
     <Layout>
       <Banner>
         <Col span={24} style={{ margin: 'auto', maxWidth: '600px' }}>
-          <Title level={1}>Stay In Touch With All Your Acquaintances.</Title>
+          <Title level={1}>Keep In Touch With All Your Acquaintances.</Title>
           <Typography.Text style={{ fontSize: '18px', color: '#8c8c8c' }}>
             {/* Never forget to stay in touch with your acquaintances with daily
             reminders.  */}
@@ -77,7 +77,7 @@ const Home = () => {
           </a>{' '}
           systems to keep in touch and stay top of mind of those around you.{' '}
           <Link to="/sign-up" style={{ fontWeight: 'bolder' }}>
-            Stay-In-Touch
+            Keep-In-Touch
           </Link>{' '}
           empowers you to easily build your own custom system.
         </Text>
