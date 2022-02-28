@@ -8,18 +8,27 @@ import { getUser } from '../db/users';
 import dayjs from 'dayjs';
 import { sendEmail } from './send-email';
 
-const getLineItem = (contact: EstablishedContact) => {
-  let item = `${contact.name}`;
+const getLineItems = (contacts: EstablishedContact[]) => {
+  let items = ``;
 
-  if (contact?.contactInfo) {
-    item += ` @${contact?.contactInfo}`;
-  }
+  contacts.map((contact) => {
+    const info = contact?.contactInfo;
+    const notes = contact?.notes;
+    items += `
+    <div style="margin: 8px 0; line-height: 1.6; background-color: #fafafa; padding: 5px; border-radius: 5px;">
+      <div><span style="font-weight: 700;">${contact.name}</span> ${
+      info ? `@${info}` : ''
+    }</div>
+      <div>${
+        notes
+          ? `<span style="font-weight: 700;">Notes:</span> ${contact?.notes}`
+          : ''
+      }</div>
+    </div>
+    `;
+  });
 
-  if (contact?.notes) {
-    item += `<p>Notes: ${contact?.notes}</p>`;
-  }
-
-  return `<div>${item}</div>`;
+  return items;
 };
 
 /* 
@@ -76,14 +85,14 @@ export const findContacts = async (hour: number) => {
         }
 
         let msg = `
-          <div>
+          <div style="text-align: center;">
               <h3>Hi!</h3>
               
-              Here’s who you should keep in touch with:
-              ${gc.contacts.map((cs) => getLineItem(cs))}
+              <h5 style="font-size: 1em;">Here’s who you should keep in touch with today:</h5>
+              <div>${getLineItems(gc.contacts)}</div>
 
-              <p>Hour: ${hour}</p>
-              <p>Happy reconnecting!</p>
+              
+              <h6 style="font-size: 0.9em;">Happy reconnecting!</h6>
           </div>
         `;
 
