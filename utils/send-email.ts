@@ -26,7 +26,7 @@ export async function sendEmail(email: string, msg: string, subject?: string) {
   // send mail with defined transport object
   try {
     let info = await transporter.sendMail({
-      from: `Financial Snapshot <${process.env.EMAIL_USER}>`, // sender address
+      from: `Keep In Touch <${process.env.EMAIL_USER}>`, // sender address
       to: email, // list of receivers
       subject: subject || 'Your Weekly Financial Report', // Subject line
       html: msg, // html body
