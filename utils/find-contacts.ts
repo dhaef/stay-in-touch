@@ -44,7 +44,7 @@ const getLineItems = (contacts: EstablishedContact[]) => {
 
 export const findContacts = async (hour: number) => {
   const now = dayjs().unix();
-  const then = dayjs().add(1, 'month').unix();
+  const then = dayjs().add(1, 'day').unix();
   //   get contacts for today
   const contacts: EstablishedContact[] = await nextContacts({ now, then });
 
