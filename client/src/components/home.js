@@ -6,7 +6,7 @@ import { useNavigate, Link } from 'react-router-dom';
 
 const Banner = styled(Row)`
   width: 100%;
-  padding: 7% 16px;
+  padding: 15% 16px;
   text-align: center;
   max-width: 1200px;
   margin: auto;

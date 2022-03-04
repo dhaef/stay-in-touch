@@ -28,7 +28,7 @@ export async function sendEmail(email: string, msg: string, subject?: string) {
     let info = await transporter.sendMail({
       from: `Keep In Touch <${process.env.EMAIL_USER}>`, // sender address
       to: email, // list of receivers
-      subject: subject || 'Your Weekly Financial Report', // Subject line
+      subject: subject || 'Keep In Touch', // Subject line
       html: msg, // html body
     });
 
