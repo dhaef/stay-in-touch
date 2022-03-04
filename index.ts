@@ -1,7 +1,7 @@
 import express, { Request, Response } from 'express';
 import bodyParser from 'body-parser';
-// const forceSsl = require('force-ssl-heroku');
-// import rateLimit from 'express-rate-limit';
+import forceSsl from 'force-ssl-heroku';
+import rateLimit from 'express-rate-limit';
 import path from 'path';
 import fileupload from 'express-fileupload';
 import { findContacts } from './utils/find-contacts';
@@ -9,16 +9,16 @@ import { findContacts } from './utils/find-contacts';
 const port = process.env.PORT || 5000;
 require('dotenv').config();
 const app = express();
-// app.use(forceSsl);
+app.use(forceSsl);
 
-// app.set('trust proxy', 1);
-// const limiter = rateLimit({
-//   windowMs: 15 * 60 * 1000, // 15 minutes
-//   max: 150, // limit each IP to 100 requests per windowMs
-// });
+app.set('trust proxy', 1);
+const limiter = rateLimit({
+  windowMs: 15 * 60 * 1000, // 15 minutes
+  max: 150, // limit each IP to 100 requests per windowMs
+});
 
 //  apply to all requests
-// app.use(limiter);
+app.use(limiter);
 
 app.use(bodyParser.json());
 app.use(fileupload());
