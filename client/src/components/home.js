@@ -1,12 +1,13 @@
 import React from 'react';
 import Layout from './style/layout';
 import styled from 'styled-components';
-import { Button, Typography, Row, Col } from 'antd';
+import { Button, Typography, Row, Col, Image } from 'antd';
 import { useNavigate, Link } from 'react-router-dom';
+import EmailPic from '../keep-in-touch-email.PNG';
 
 const Banner = styled(Row)`
   width: 100%;
-  padding: 15% 16px;
+  padding: 5% 16px;
   text-align: center;
   max-width: 1200px;
   margin: auto;
@@ -27,19 +28,76 @@ const Btn = styled(Button)`
   height: auto !important;
 `;
 
+const Img = styled(Image)`
+  width: 50%;
+  box-shadow: rgba(0, 0, 0, 0.09) 0px 3px 12px;
+  border-radius: 10px;
+
+  @media (max-width: 768px) {
+    margin-top: 10%;
+  }
+`;
+
+const FeatureItem = styled(Typography.Text)`
+  font-size: 18px;
+  line-height: 2;
+`;
+
 const Home = () => {
   const navigate = useNavigate();
 
   return (
     <Layout>
       <Banner>
-        <Col span={24} style={{ margin: 'auto', maxWidth: '600px' }}>
-          <Title level={1}>Keep In Touch With All Your Acquaintances.</Title>
-          <Typography.Text style={{ fontSize: '18px', color: '#8c8c8c' }}>
-            {/* Never forget to stay in touch with your acquaintances with daily
-            reminders.  */}
-            A simple system to never lose touch with your acquaintances.
-          </Typography.Text>
+        <Col span={24} lg={14} style={{ margin: 'auto', maxWidth: '600px' }}>
+          <Title level={1}>
+            Keep In Touch With All Your Acquaintances.
+            {/* The simpliest way to Keep In Touch with all your acquaintances. */}
+          </Title>
+          <div
+            style={{
+              maxWidth: '450px',
+              margin: 'auto',
+            }}
+          >
+            <Typography.Text
+              style={{
+                fontSize: '18px',
+                color: '#8c8c8c',
+              }}
+            >
+              Daily reminders for everyone you should reach out to today,
+              helping you to never forget to maintain strong relationships.
+              {/* A simple system to never lose touch with your acquaintances. */}
+            </Typography.Text>
+          </div>
+          <div>
+            <Btn
+              type="primary"
+              style={{
+                padding: '12px 16px',
+                fontWeight: 'bold',
+                fontSize: '24px',
+                marginTop: '16px',
+              }}
+              onClick={() => navigate('/sign-up')}
+            >
+              Sign-Up For Free!
+            </Btn>
+            <Typography.Text
+              style={{
+                fontSize: '12px',
+                color: '#8c8c8c',
+                display: 'block',
+                marginTop: '10px',
+              }}
+            >
+              No Credit Card Required
+            </Typography.Text>
+          </div>
+        </Col>
+        <Col span={24} lg={10}>
+          <Img src={EmailPic} preview={false} />
         </Col>
       </Banner>
       {/* <div style={{ maxWidth: '1000px', margin: 'auto', padding: '0 10px' }}>
@@ -91,9 +149,33 @@ const Home = () => {
           backgroundColor: '#fafafa',
         }}
       >
-        <Text>
-          Daily reminders of all the people you should reach out to today.
-        </Text>
+        <Typography.Title level={2}>Features</Typography.Title>
+        <div>
+          <FeatureItem>
+            - Build your own system with custom timeframes
+          </FeatureItem>
+        </div>
+        <div>
+          <FeatureItem>
+            - Add contact info and notes on each contact
+          </FeatureItem>
+        </div>
+        <div>
+          <FeatureItem>- Import contacts from a .csv file</FeatureItem>
+        </div>
+        <div>
+          <FeatureItem>
+            - Choose your preferred reminder time (every 3 hours)
+          </FeatureItem>
+        </div>
+        {/* 
+        
+          - Build your own system with custom timeframes
+          - Add contact info and notes on each contact
+          - Import contacts from a .csv file
+          - Choose your preferred reminder time (Every 3 hours)
+        
+        */}
         <Btn
           type="primary"
           style={{
