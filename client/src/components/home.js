@@ -16,6 +16,10 @@ const Banner = styled(Row)`
 const Title = styled(Typography.Title)`
   font-size: 400% !important;
   margin-bottom: 16px !important;
+
+  @media (max-width: 768px) {
+    font-size: 300% !important;
+  }
 `;
 
 const Text = styled(Typography.Text)`
@@ -33,7 +37,7 @@ const Img = styled(Image)`
   box-shadow: rgba(0, 0, 0, 0.09) 0px 3px 12px;
   border-radius: 10px;
 
-  @media (max-width: 768px) {
+  @media (max-width: 990px) {
     margin-top: 10%;
   }
 `;
