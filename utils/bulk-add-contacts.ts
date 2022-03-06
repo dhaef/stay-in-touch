@@ -3,7 +3,7 @@ import { create } from '../db/contacts';
 import { updateContactsCount } from '../db/users';
 import { checkSubscription } from './stripe';
 
-export const contactLimit = 10;
+export const contactLimit = 250;
 
 export const bulkAddContacts = async (
   userId,
