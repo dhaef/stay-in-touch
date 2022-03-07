@@ -5,13 +5,14 @@ import { Typography } from 'antd';
 const CardDiv = styled.div`
   padding: 0.5rem;
   margin: auto auto 24px auto;
-  border-top: 3px solid #1890ff;
   box-shadow: rgba(0, 0, 0, 0.09) 0px 3px 12px;
-  border-radius: 0 0 5px 5px;
+  border-radius: 5px;
   width: 100%;
   text-align: center;
 `;
-// box-shadow: 0 0 5px 1px #b5b5b5;
+// border-top: 3px solid #1890ff;
+// border-radius: 0 0 5px 5px;
+
 const Title = styled(Typography.Title)`
   margin: 10px !important;
 `;

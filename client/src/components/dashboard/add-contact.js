@@ -62,13 +62,13 @@ const AddContact = ({ token, fetch }) => {
           label="Name"
           rules={[{ required: true, message: 'Please input a name.' }]}
         >
-          <Input type="text" placeholder="Name" />
+          <Input type="text" />
         </Form.Item>
         <Form.Item name="contactInfo" label="Contact Info">
-          <Input type="text" placeholder="Contact Info" />
+          <Input type="text" />
         </Form.Item>
         <Form.Item name="notes" label="Notes">
-          <Input type="text" placeholder="Notes" />
+          <Input type="text" />
         </Form.Item>
         <Form.Item
           name="frequency"
@@ -96,11 +96,7 @@ const AddContact = ({ token, fetch }) => {
               noStyle
               rules={[{ required: true, message: 'Street is required' }]}
             >
-              <Input
-                placeholder="Time Length"
-                type="number"
-                style={{ width: '50%' }}
-              />
+              <Input type="number" style={{ width: '50%' }} />
             </Form.Item>
           </Input.Group>
           {/* <Input type="number" placeholder="Frequency" min={0} step={0.01} /> */}

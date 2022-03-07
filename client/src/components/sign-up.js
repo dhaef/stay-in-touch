@@ -1,15 +1,35 @@
-import React, { useState } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import Layout from './style/layout';
 import Card from './style/card';
-import { Form, Input, Button, Alert } from 'antd';
+import { Form, Input, Button, Alert, Row, Col } from 'antd';
 import UserPool from './cognito/user-pool';
 import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import { CheckCircleOutlined, MinusCircleOutlined } from '@ant-design/icons';
+import styled from 'styled-components';
+
+const PasswordItem = styled.div`
+  color: ${(props) => (props.type ? 'black' : '#c4c4c4')};
+`;
 
 const SignUp = () => {
   const navigate = useNavigate();
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(false);
+  const [password, setPassword] = useState({
+    length: false,
+    upper: false,
+    lower: false,
+    number: false,
+  });
+  const emailInput = useRef(null);
+
+  useEffect(() => {
+    if (emailInput.current) {
+      emailInput.current.focus();
+    }
+  }, [emailInput]);
+
   const onFinish = (values) => {
     setLoading(true);
     UserPool.signUp(
@@ -39,6 +59,16 @@ const SignUp = () => {
       }
     );
   };
+
+  const onChange = ({ target: { value } }) => {
+    setPassword({
+      length: value?.length > 7 ? true : false,
+      upper: /[A-Z]/.test(value) ? true : false,
+      lower: /[a-z]/.test(value) ? true : false,
+      number: /\d/.test(value) ? true : false,
+    });
+  };
+
   return (
     <Layout>
       <div
@@ -58,11 +88,12 @@ const SignUp = () => {
               name="email"
               rules={[{ required: true, message: 'Please input your email!' }]}
             >
-              <Input />
+              <Input ref={emailInput} />
             </Form.Item>
             <Form.Item
               label="Password"
               name="password"
+              style={{ marginBottom: '5px' }}
               tooltip={
                 <ul>
                   <li>A capital letter</li>
@@ -76,8 +107,46 @@ const SignUp = () => {
                 { required: true, message: 'Please input your password!' },
               ]}
             >
-              <Input.Password />
+              <Input.Password onChange={onChange} />
             </Form.Item>
+            <Row gutter={24} style={{ marginBottom: '20px', fontSize: '10px' }}>
+              <Col span={12}>
+                <PasswordItem type={password?.length}>
+                  {password?.length ? (
+                    <CheckCircleOutlined />
+                  ) : (
+                    <MinusCircleOutlined />
+                  )}{' '}
+                  8 characters
+                </PasswordItem>
+                <PasswordItem type={password?.number}>
+                  {password?.number ? (
+                    <CheckCircleOutlined />
+                  ) : (
+                    <MinusCircleOutlined />
+                  )}{' '}
+                  Number
+                </PasswordItem>
+              </Col>
+              <Col span={12}>
+                <PasswordItem type={password?.upper}>
+                  {password?.upper ? (
+                    <CheckCircleOutlined />
+                  ) : (
+                    <MinusCircleOutlined />
+                  )}{' '}
+                  Uppercase letter
+                </PasswordItem>
+                <PasswordItem type={password?.lower}>
+                  {password?.lower ? (
+                    <CheckCircleOutlined />
+                  ) : (
+                    <MinusCircleOutlined />
+                  )}{' '}
+                  Lowercase letter
+                </PasswordItem>
+              </Col>
+            </Row>
             <Button type="primary" htmlType="submit" loading={loading}>
               Sign Up
             </Button>

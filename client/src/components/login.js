@@ -1,4 +1,4 @@
-import React, { useState, useContext } from 'react';
+import React, { useState, useContext, useRef, useEffect } from 'react';
 import Layout from './style/layout';
 import Card from './style/card';
 import { Form, Input, Button, Alert } from 'antd';
@@ -10,6 +10,13 @@ const Login = () => {
   const [loading, setLoading] = useState(false);
   const { authenticate } = useContext(AccountContext);
   const navigate = useNavigate();
+  const emailInput = useRef(null);
+
+  useEffect(() => {
+    if (emailInput.current) {
+      emailInput.current.focus();
+    }
+  }, [emailInput]);
 
   const onFinish = async (values) => {
     try {
@@ -41,7 +48,7 @@ const Login = () => {
               name="email"
               rules={[{ required: true, message: 'Please input your email!' }]}
             >
-              <Input />
+              <Input ref={emailInput} />
             </Form.Item>
             <Form.Item
               label="Password"

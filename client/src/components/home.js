@@ -4,6 +4,7 @@ import styled from 'styled-components';
 import { Button, Typography, Row, Col, Image } from 'antd';
 import { useNavigate, Link } from 'react-router-dom';
 import EmailPic from '../keep-in-touch-email.PNG';
+import { CheckCircleOutlined } from '@ant-design/icons';
 
 const Banner = styled(Row)`
   width: 100%;
@@ -156,20 +157,23 @@ const Home = () => {
         <Typography.Title level={2}>Features</Typography.Title>
         <div>
           <FeatureItem>
-            - Build your own system with custom timeframes
+            <CheckCircleOutlined /> Build your own system with custom timeframes
           </FeatureItem>
         </div>
         <div>
           <FeatureItem>
-            - Add contact info and notes on each contact
+            <CheckCircleOutlined /> Add contact info and notes on each contact
           </FeatureItem>
         </div>
         <div>
-          <FeatureItem>- Import contacts from a .csv file</FeatureItem>
+          <FeatureItem>
+            <CheckCircleOutlined /> Import contacts from a .csv file
+          </FeatureItem>
         </div>
         <div>
           <FeatureItem>
-            - Choose your preferred reminder time (every 3 hours)
+            <CheckCircleOutlined /> Choose your preferred reminder time (every 3
+            hours)
           </FeatureItem>
         </div>
         {/* 
