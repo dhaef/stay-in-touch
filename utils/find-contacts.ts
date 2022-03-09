@@ -45,12 +45,13 @@ const getLineItems = (contacts: EstablishedContact[]) => {
 export const findContacts = async (hour: number) => {
   const now = dayjs().unix();
   const then = dayjs().add(1, 'day').unix();
+  console.log(`now`, now);
+  console.log(`then`, then);
   //   get contacts for today
   const contacts: EstablishedContact[] = await nextContacts({ now, then });
-
+  console.log(contacts);
   //   GROUP CONTACTS??
   const groupedContacts: { id: string; contacts: EstablishedContact[] }[] = [];
-  console.log(groupedContacts);
   contacts.forEach((c) => {
     const index = groupedContacts.findIndex((gc) => gc.id === c.userId);
 
@@ -61,12 +62,12 @@ export const findContacts = async (hour: number) => {
     }
   });
 
-  /*  check each user alert time. 
+  /*  check each user alert time.
         if so,
-        write the email, 
+        write the email,
         send email,
         delete the record,
-        create the next contact record 
+        create the next contact record
   */
   const thisHourContacts = [...contacts];
 
@@ -83,15 +84,14 @@ export const findContacts = async (hour: number) => {
           }
           return;
         }
-
+        console.log(`Sending reminder for:`, gc.contacts);
         let msg = `
           <div style="text-align: center;">
               <h3>Hi!</h3>
-              
+
               <h5 style="font-size: 1em;">Here’s who you should keep in touch with today:</h5>
               <div>${getLineItems(gc.contacts)}</div>
 
-              
               <h6 style="font-size: 0.9em;">Happy reconnecting!</h6>
           </div>
         `;
