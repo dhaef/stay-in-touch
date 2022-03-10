@@ -3,6 +3,9 @@ import { v4 as uuidv4 } from 'uuid';
 import { getFrequencyType } from '../utils/contact';
 import { removeDbItems } from '../utils/db';
 import dayjs from 'dayjs';
+import utc from 'dayjs/plugin/utc';
+
+dayjs.extend(utc);
 
 const tableName = 'stay-in-touch';
 
@@ -35,6 +38,7 @@ export const create = async (
   const { userId, frequency, frequencyType } = args;
   const id = uuidv4();
   const nextContact = dayjs()
+    .utc()
     .add(frequency, getFrequencyType(frequencyType))
     .unix();
 
@@ -45,7 +49,7 @@ export const create = async (
     gsiOnePk: `EstablishedContact`,
     gsiOneSk: nextContact,
     nextContact,
-    createdAt: dayjs().toISOString(),
+    createdAt: dayjs().utc().toISOString(),
     ...args,
   };
   const params = {

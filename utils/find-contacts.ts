@@ -6,7 +6,10 @@ import {
 } from '../db/contacts';
 import { getUser } from '../db/users';
 import dayjs from 'dayjs';
+import utc from 'dayjs/plugin/utc';
 import { sendEmail } from './send-email';
+
+dayjs.extend(utc);
 
 const getLineItems = (contacts: EstablishedContact[]) => {
   let items = ``;
@@ -43,8 +46,8 @@ const getLineItems = (contacts: EstablishedContact[]) => {
 */
 
 export const findContacts = async (hour: number) => {
-  const now = dayjs().unix();
-  const then = dayjs().add(1, 'day').unix();
+  const now = dayjs().utc().unix();
+  const then = dayjs().utc().add(1, 'day').unix();
   console.log(`now`, now);
   console.log(`then`, then);
   //   get contacts for today

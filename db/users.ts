@@ -1,6 +1,9 @@
 import { client } from './client';
 import dayjs from 'dayjs';
+import utc from 'dayjs/plugin/utc';
 import { removeDbItems } from '../utils/db';
+
+dayjs.extend(utc);
 
 const tableName = 'stay-in-touch';
 
@@ -23,7 +26,7 @@ export const create = async ({ email, poolId, userSub }) => {
     poolId,
     reminderTime: 0,
     contactsCount: 0,
-    createdAt: dayjs().toISOString(),
+    createdAt: dayjs().utc().toISOString(),
     pk: `User|${userSub}`,
     sk: `User`,
   };
