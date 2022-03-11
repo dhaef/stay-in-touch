@@ -31,7 +31,8 @@ app.use('/api/stripe', require('./routes/stripe'));
 app.get('/test/:hour', async (req: Request, res: Response) => {
   const { hour } = req.params;
   console.log(`HERERERE`, hour);
-  await findContacts(+hour);
+  const result = await findContacts(+hour);
+  console.log(`result`, result);
   res.status(200).json({ test: 'success' });
 });
 

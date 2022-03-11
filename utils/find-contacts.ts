@@ -108,9 +108,11 @@ export const findContacts = async (hour: number) => {
 
   const created = await Promise.all(
     thisHourContacts.map(async (cs) => {
+      console.log(`Removing and creating: ${cs.name}|${cs.id}`);
       try {
         await remove(cs.userId, cs.id);
         return await create({
+          id: cs.id,
           userId: cs.userId,
           lastContact: cs.nextContact,
           name: cs.name,

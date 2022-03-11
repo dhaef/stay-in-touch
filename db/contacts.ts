@@ -30,13 +30,14 @@ export interface CreateEstablishedContactInput {
   frequency: number;
   frequencyType: string;
   lastContact?: string;
+  id?: string;
 }
 
 export const create = async (
   args: CreateEstablishedContactInput
 ): Promise<EstablishedContact> => {
   const { userId, frequency, frequencyType } = args;
-  const id = uuidv4();
+  const id = args?.id || uuidv4();
   const nextContact = dayjs()
     .utc()
     .add(frequency, getFrequencyType(frequencyType))
