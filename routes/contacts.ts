@@ -1,10 +1,20 @@
 import { Router, Request, Response } from 'express';
-import { create, remove, contactsByUserId, contactsById } from '../db/contacts';
+import {
+  create,
+  remove,
+  contactsByUserId,
+  contactsById,
+  nextContacts,
+} from '../db/contacts';
 import { findContacts } from '../utils/find-contacts';
 import { authUser, UserRequest } from '../middleware/auth';
 import { bulkAddContacts, contactLimit } from '../utils/bulk-add-contacts';
 import { updateContactsCount } from '../db/users';
 import { checkSubscription } from '../utils/stripe';
+import dayjs from 'dayjs';
+import utc from 'dayjs/plugin/utc';
+
+dayjs.extend(utc);
 
 const router = Router();
 
@@ -71,6 +81,19 @@ router.get('/all', async (_req: Request, res: Response) => {
     //   get the real hour from the event
     const contacts = await findContacts(0);
     res.status(200).json({ data: contacts });
+  } catch (error) {
+    console.log(error);
+    res.status(400);
+  }
+});
+
+router.post('/next', async (req: Request, res: Response) => {
+  const { now, then } = req.body;
+  // const now = dayjs().utc().add(1, 'day').startOf('day').unix();
+  // const then = dayjs().utc().add(1, 'day').endOf('day').unix();
+  try {
+    const contacts = await nextContacts({ now, then });
+    res.status(200).json({ data: contacts, count: contacts.length });
   } catch (error) {
     console.log(error);
     res.status(400);
