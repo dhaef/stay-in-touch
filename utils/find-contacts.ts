@@ -83,6 +83,7 @@ export const findContacts = async (hour: number) => {
         reminderTime = user?.reminderTime || 0;
         if (reminderTime !== hour) {
           const index = thisHourContacts.findIndex((thc) => thc.id === user.id);
+          console.log(user.email, reminderTime, hour, index);
           if (index > -1) {
             thisHourContacts.splice(index, 1);
           }
@@ -107,29 +108,27 @@ export const findContacts = async (hour: number) => {
     })
   );
 
-  let created;
-  if (reminderTime === hour) {
-    created = await Promise.all(
-      thisHourContacts.map(async (cs) => {
-        console.log(`Removing and creating: ${cs.name}|${cs.id}`);
-        try {
-          await remove(cs.userId, cs.id);
-          return await create({
-            id: cs.id,
-            userId: cs.userId,
-            lastContact: cs.nextContact,
-            name: cs.name,
-            frequency: cs.frequency,
-            frequencyType: cs.frequencyType,
-            contactInfo: cs?.contactInfo,
-            notes: cs?.notes,
-          });
-        } catch (error) {
-          console.log(error);
-        }
-      })
-    );
-  }
+  console.log(thisHourContacts.map((x) => x.id));
+  const created = await Promise.all(
+    thisHourContacts.map(async (cs) => {
+      console.log(`Removing and creating: ${cs.name}|${cs.id}`);
+      try {
+        await remove(cs.userId, cs.id);
+        return await create({
+          id: cs.id,
+          userId: cs.userId,
+          lastContact: cs.nextContact,
+          name: cs.name,
+          frequency: cs.frequency,
+          frequencyType: cs.frequencyType,
+          contactInfo: cs?.contactInfo,
+          notes: cs?.notes,
+        });
+      } catch (error) {
+        console.log(error);
+      }
+    })
+  );
 
   return {
     sent,
