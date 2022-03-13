@@ -82,7 +82,9 @@ export const findContacts = async (hour: number) => {
 
         reminderTime = user?.reminderTime || 0;
         if (reminderTime !== hour) {
-          const index = thisHourContacts.findIndex((thc) => thc.id === user.id);
+          const index = thisHourContacts.findIndex(
+            (thc) => thc.userId === user.id
+          );
           console.log(user.email, reminderTime, hour, index);
           if (index > -1) {
             thisHourContacts.splice(index, 1);
