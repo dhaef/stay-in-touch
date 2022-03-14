@@ -1,8 +1,8 @@
 import {
   nextContacts,
   EstablishedContact,
-  remove,
-  create,
+  getNextContact,
+  updateContact,
 } from '../db/contacts';
 import { getUser } from '../db/users';
 import dayjs from 'dayjs';
@@ -86,16 +86,7 @@ export const findContacts = async (hour: number) => {
         } else {
           return;
         }
-        // if (reminderTime !== hour) {
-        //   const index = contacts.findIndex(
-        //     (thc) => thc.userId === user.id
-        //   );
-        //   console.log(user.email, reminderTime, hour, index);
-        //   if (index > -1) {
-        //     contacts.splice(index, 1);
-        //   }
-        //   return;
-        // }
+
         console.log(`Sending reminder for:`, gc.contacts);
         let msg = `
           <div style="text-align: center;">
@@ -118,19 +109,14 @@ export const findContacts = async (hour: number) => {
   console.log(contactsReadyToBeRecreated.flat().map((f) => f.email));
   const created = await Promise.all(
     contactsReadyToBeRecreated.flat().map(async (cs) => {
-      console.log(`Removing and creating: ${cs.name}|${cs.id}`);
+      console.log(`Updating: ${cs.name}|${cs.id}`);
       try {
-        await remove(cs.userId, cs.id);
-        return await create({
-          id: cs.id,
-          userId: cs.userId,
-          lastContact: cs.nextContact,
-          name: cs.name,
-          frequency: cs.frequency,
-          frequencyType: cs.frequencyType,
-          contactInfo: cs?.contactInfo,
-          notes: cs?.notes,
-        });
+        return await updateContact(
+          cs.userId,
+          cs.id,
+          getNextContact(cs.frequency, cs.frequencyType),
+          cs.nextContact
+        );
       } catch (error) {
         console.log(error);
       }

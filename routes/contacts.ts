@@ -5,6 +5,7 @@ import {
   contactsByUserId,
   contactsById,
   nextContacts,
+  updateContact,
 } from '../db/contacts';
 import { findContacts } from '../utils/find-contacts';
 import { authUser, UserRequest } from '../middleware/auth';

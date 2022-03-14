@@ -33,15 +33,15 @@ export interface CreateEstablishedContactInput {
   id?: string;
 }
 
+export const getNextContact = (frequency, frequencyType) =>
+  dayjs().utc().add(frequency, getFrequencyType(frequencyType)).unix();
+
 export const create = async (
   args: CreateEstablishedContactInput
 ): Promise<EstablishedContact> => {
   const { userId, frequency, frequencyType } = args;
   const id = args?.id || uuidv4();
-  const nextContact = dayjs()
-    .utc()
-    .add(frequency, getFrequencyType(frequencyType))
-    .unix();
+  const nextContact = getNextContact(frequency, frequencyType);
 
   const dbItem = {
     id,
@@ -148,4 +148,33 @@ export const nextContacts = async (args: { now: number; then: number }) => {
   } catch (error) {
     console.log(error);
   }
+};
+
+export const updateContact = async (
+  userId: string,
+  id: string,
+  nextContact: number,
+  lastContact: number
+) => {
+  const params = {
+    TableName: tableName,
+    Key: {
+      pk: `EstablishedContact|User|${userId}`,
+      sk: `EstablishedContact|${id}`,
+    },
+    UpdateExpression: `
+      SET lastContact=:lastContact,
+          nextContact=:nextContact,
+          gsiOneSk=:nextContact
+    `,
+    ExpressionAttributeValues: {
+      ':lastContact': lastContact,
+      ':nextContact': nextContact,
+    },
+    ReturnValues: 'ALL_NEW',
+  };
+
+  const response = await client.update(params).promise();
+  console.log(response);
+  return response.Attributes;
 };
