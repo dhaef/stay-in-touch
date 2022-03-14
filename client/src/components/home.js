@@ -204,7 +204,7 @@ const Home = () => {
             marginTop: '16px',
           }}
         >
-          Free for your first 250 contacts!
+          Free for your first 50 contacts!
           <br />
           $5/month after
         </Typography.Text>

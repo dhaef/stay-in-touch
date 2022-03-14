@@ -41,7 +41,7 @@ const AddContact = ({ token, fetch }) => {
           style={{ marginBottom: '14px' }}
           message={
             <Typography.Text>
-              Free tier limit reached: 250 contacts.{' '}
+              Free tier limit reached: 50 contacts.{' '}
               <Link to="/pay" style={{ fontWeight: '700' }}>
                 Join now
               </Link>{' '}
