@@ -72,25 +72,30 @@ export const findContacts = async (hour: number) => {
         delete the record,
         create the next contact record
   */
-  const thisHourContacts = [...contacts];
+  // const thisHourContacts = [...contacts];
+  const contactsReadyToBeRecreated = [];
 
-  let reminderTime;
   const sent = await Promise.all(
     groupedContacts.map(async (gc) => {
       try {
         const user = await getUser(gc.id);
 
-        reminderTime = user?.reminderTime || 0;
-        if (reminderTime !== hour) {
-          const index = thisHourContacts.findIndex(
-            (thc) => thc.userId === user.id
-          );
-          console.log(user.email, reminderTime, hour, index);
-          if (index > -1) {
-            thisHourContacts.splice(index, 1);
-          }
+        const reminderTime = user?.reminderTime || 0;
+        if (reminderTime === hour) {
+          contactsReadyToBeRecreated.push(gc.contacts);
+        } else {
           return;
         }
+        // if (reminderTime !== hour) {
+        //   const index = contacts.findIndex(
+        //     (thc) => thc.userId === user.id
+        //   );
+        //   console.log(user.email, reminderTime, hour, index);
+        //   if (index > -1) {
+        //     contacts.splice(index, 1);
+        //   }
+        //   return;
+        // }
         console.log(`Sending reminder for:`, gc.contacts);
         let msg = `
           <div style="text-align: center;">
@@ -110,9 +115,9 @@ export const findContacts = async (hour: number) => {
     })
   );
 
-  console.log(thisHourContacts.map((x) => x.id));
+  console.log(contactsReadyToBeRecreated);
   const created = await Promise.all(
-    thisHourContacts.map(async (cs) => {
+    contactsReadyToBeRecreated.flat().map(async (cs) => {
       console.log(`Removing and creating: ${cs.name}|${cs.id}`);
       try {
         await remove(cs.userId, cs.id);
