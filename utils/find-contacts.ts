@@ -115,7 +115,7 @@ export const findContacts = async (hour: number) => {
     })
   );
 
-  console.log(contactsReadyToBeRecreated);
+  console.log(contactsReadyToBeRecreated.flat().map((f) => f.email));
   const created = await Promise.all(
     contactsReadyToBeRecreated.flat().map(async (cs) => {
       console.log(`Removing and creating: ${cs.name}|${cs.id}`);
