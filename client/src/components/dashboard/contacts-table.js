@@ -10,6 +10,9 @@ import {
 import axios from 'axios';
 import Card from '../style/card';
 import styled from 'styled-components';
+import utc from 'dayjs/plugin/utc';
+
+dayjs.extend(utc);
 
 const TableContainer = styled.div`
   overflow-y: auto;
@@ -98,7 +101,8 @@ const ContactsTable = ({ token, data, fetch }) => {
       title: 'Next Contact',
       dataIndex: 'nextContact',
       key: 'nextContact',
-      render: (nextContact) => dayjs.unix(nextContact).format('DD/MM/YYYY'),
+      render: (nextContact) =>
+        dayjs.unix(nextContact).utc().format('DD/MM/YYYY'),
     },
     {
       title: 'Action',
