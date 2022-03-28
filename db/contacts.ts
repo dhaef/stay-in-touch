@@ -178,3 +178,71 @@ export const updateContact = async (
   console.log(response);
   return response.Attributes;
 };
+
+export const update = async (args: {
+  userId: string;
+  id: string;
+  nextContact: number;
+  lastContact: number;
+  name: string;
+  frequency: number;
+  frequencyType: string;
+  notes?: string;
+  contactInfo?: string;
+}) => {
+  const {
+    userId,
+    id,
+    nextContact,
+    lastContact,
+    name,
+    frequency,
+    frequencyType,
+    notes,
+    contactInfo,
+  } = args;
+
+  const updateExpression: any = [
+    'lastContact=:lastContact',
+    'nextContact=:nextContact',
+    'gsiOneSk=:nextContact',
+    '#n=:n',
+    'frequency=:frequency',
+    'frequencyType=:frequencyType',
+  ];
+  const ExpressionAttributeValues = {
+    ':lastContact': lastContact,
+    ':nextContact': nextContact,
+    ':n': name,
+    ':frequency': frequency,
+    ':frequencyType': frequencyType,
+  };
+
+  if (notes) {
+    updateExpression.push(`notes=:notes`);
+    ExpressionAttributeValues[':notes'] = notes;
+  }
+
+  if (contactInfo) {
+    updateExpression.push(`contactInfo=:contactInfo`);
+    ExpressionAttributeValues[':contactInfo'] = contactInfo;
+  }
+
+  const params = {
+    TableName: tableName,
+    Key: {
+      pk: `EstablishedContact|User|${userId}`,
+      sk: `EstablishedContact|${id}`,
+    },
+    UpdateExpression: `SET ${updateExpression.join(',')}`,
+    ExpressionAttributeValues,
+    ExpressionAttributeNames: {
+      '#n': 'name',
+    },
+    ReturnValues: 'ALL_NEW',
+  };
+
+  const response = await client.update(params).promise();
+  console.log(response);
+  return response.Attributes;
+};

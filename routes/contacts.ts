@@ -5,13 +5,15 @@ import {
   contactsByUserId,
   contactsById,
   nextContacts,
-  updateContact,
+  update,
+  EstablishedContact,
 } from '../db/contacts';
 import { findContacts } from '../utils/find-contacts';
 import { authUser, UserRequest } from '../middleware/auth';
 import { bulkAddContacts, contactLimit } from '../utils/bulk-add-contacts';
 import { updateContactsCount } from '../db/users';
 import { checkSubscription } from '../utils/stripe';
+import { getNextContact } from '../db/contacts';
 import dayjs from 'dayjs';
 import utc from 'dayjs/plugin/utc';
 
@@ -136,6 +138,24 @@ router.delete('/:id', authUser, async (req: UserRequest, res: Response) => {
   try {
     const contact = await remove(userId, id);
     await updateContactsCount(userId, contactsCount - 1);
+
+    res.status(200).json({ data: contact });
+  } catch (error) {
+    console.log(error);
+    res.status(400);
+  }
+});
+
+router.post('/update', authUser, async (req: UserRequest, res: Response) => {
+  const {
+    input: { createdAt, ...rest },
+  } = req.body;
+
+  try {
+    const contact = await update({
+      ...rest,
+      nextContact: getNextContact(rest.frequency, rest.frequencyType),
+    });
 
     res.status(200).json({ data: contact });
   } catch (error) {
