@@ -80,6 +80,11 @@ export const findContacts = async (hour: number) => {
       try {
         const user = await getUser(gc.id);
 
+        // consider undefined as enabled
+        if (user?.isEmailEnabled === false) {
+          return;
+        }
+
         const reminderTime = user?.reminderTime || 0;
         if (reminderTime === hour) {
           contactsReadyToBeRecreated.push(gc.contacts);

@@ -12,6 +12,7 @@ export interface User {
   stripeCustomerId?: string;
   stripeSubscriptionId?: string;
   superUser?: boolean;
+  isEmailEnabled?: boolean;
   email: string;
   id: string;
   poolId: string;
@@ -69,7 +70,11 @@ export const remove = async (id) => {
   return Item;
 };
 
-export const setReminderTime = async (userId: string, reminderTime: number) => {
+export const setSettings = async (
+  userId: string,
+  reminderTime: number,
+  isEmailEnabled?: boolean
+) => {
   const params = {
     TableName: tableName,
     Key: {
@@ -77,10 +82,12 @@ export const setReminderTime = async (userId: string, reminderTime: number) => {
       sk: 'User',
     },
     UpdateExpression: `
-      SET reminderTime=:reminderTime
+      SET reminderTime=:reminderTime,
+          isEmailEnabled=:isEmailEnabled
     `,
     ExpressionAttributeValues: {
       ':reminderTime': reminderTime,
+      ':isEmailEnabled': isEmailEnabled,
     },
     ReturnValues: 'ALL_NEW',
   };

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Select, Form, Button, Spin } from 'antd';
+import { Select, Form, Button, Spin, Switch } from 'antd';
 import axios from 'axios';
 
 const times = [
@@ -34,7 +34,7 @@ const Settings = ({ token }) => {
   const onFinish = async (values) => {
     try {
       setLoading(true);
-      const { data } = await axios.put(`/api/users/reminder-time`, values, {
+      const { data } = await axios.put(`/api/users/settings`, values, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -58,7 +58,10 @@ const Settings = ({ token }) => {
   return (
     <Form
       onFinish={onFinish}
-      initialValues={{ reminderTime: settings?.reminderTime }}
+      initialValues={{
+        reminderTime: settings?.reminderTime,
+        isEmailEnabled: settings?.isEmailEnabled ?? true,
+      }}
     >
       <Form.Item name="reminderTime" label="Reminder Time">
         <Select>
@@ -68,6 +71,13 @@ const Settings = ({ token }) => {
             </Select.Option>
           ))}
         </Select>
+      </Form.Item>
+      <Form.Item
+        label="Email Reminders"
+        name="isEmailEnabled"
+        valuePropName="checked"
+      >
+        <Switch defaultChecked />
       </Form.Item>
       <Button htmlType="submit" loading={loading}>
         Save
